@@ -19,6 +19,14 @@ server/dist
 .env.*.local
 .env.production
 
+# Database files (contains real data)
+*.db
+*.sqlite
+*.sqlite3
+
+# Binary executables
+*.exe
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
