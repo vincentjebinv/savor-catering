@@ -1,0 +1,91 @@
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model User {
+  id           Int      @id @default(autoincrement())
+  email        String   @unique
+  passwordHash String
+  companyName  String?
+  role         String   @default("USER") // USER, ADMIN
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  categories   Category[]
+  dishes       Dish[]
+  orders       Order[]
+  settings     Settings?
+}
+
+model Category {
+  id           Int      @id @default(autoincrement())
+  tenantId     Int
+  nameEn       String
+  nameTa       String
+  displayOrder Int      @default(0)
+  
+  user         User     @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  dishes       Dish[]
+
+  @@index([tenantId])
+}
+
+model Dish {
+  id           Int      @id @default(autoincrement())
+  tenantId     Int
+  categoryId   Int
+  nameEn       String
+  nameTa       String?
+  price        Float    @default(0)
+  imagePath    String?
+  varieties    String?  // JSON string
+  displayOrder Int      @default(0)
+
+  user         User     @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  category     Category @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+
+  @@index([tenantId])
+  @@index([categoryId])
+}
+
+model Order {
+  id           Int      @id @default(autoincrement())
+  tenantId     Int
+  customerName String?
+  eventName    String?
+  address      String?
+  eventDate    String?
+  eventTime    String?
+  notes        String?
+  status       String   @default("pending") // pending, confirmed, delivered, cancelled
+  createdAt    DateTime @default(now())
+
+  user         User     @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  items        OrderItem[]
+
+  @@index([tenantId])
+}
+
+model OrderItem {
+  id           Int      @id @default(autoincrement())
+  orderId      Int
+  dishNameEn   String?
+  dishNameTa   String?
+  quantity     Int      @default(1)
+  categoryName String?
+
+  order        Order    @relation(fields: [orderId], references: [id], onDelete: Cascade)
+}
+
+model Settings {
+  userId          Int      @id
+  logoPath        String?
+  backupFrequency String   @default("manual")
+  
+  user            User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
