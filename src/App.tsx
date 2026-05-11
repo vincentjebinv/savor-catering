@@ -1,17 +1,22 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, lazy, Suspense } from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
-import { isLoggedIn as checkLoginStatus } from './services/SessionService';
-import { LanguageProvider } from './context/LanguageProvider';
+import { isLoggedIn as checkLoginStatus } from './core/services/SessionService';
+import { LanguageProvider } from './core/context/LanguageProvider';
 
-// Import Pages
-import LandingPage from './pages/LandingPage';
-import LoginPage from './pages/LoginPage';
-import RegisterPage from './pages/RegisterPage';
-import AdminPage from './pages/AdminPage';
-import SettingsPage from './pages/SettingsPage';
-import MenuPage from './pages/MenuPage';
-import SelectionPage from './pages/SelectionPage';
-import HistoryPage from './pages/HistoryPage';
+// Lazy loading pages for performance
+const LandingPage = lazy(() => import('./features/auth/LandingPage'));
+const LoginPage = lazy(() => import('./features/auth/LoginPage'));
+const RegisterPage = lazy(() => import('./features/auth/RegisterPage'));
+const AdminPage = lazy(() => import('./features/menu/AdminPage'));
+const MenuPage = lazy(() => import('./features/menu/MenuPage'));
+const SelectionPage = lazy(() => import('./features/orders/SelectionPage'));
+const HistoryPage = lazy(() => import('./features/orders/HistoryPage'));
+
+const PageLoader = () => (
+  <div className="flex h-screen w-full items-center justify-center bg-slate-50">
+    <div className="text-lg font-bold text-gray-400 animate-pulse">Loading SaaS Module...</div>
+  </div>
+);
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -30,36 +35,31 @@ function App() {
     return () => window.removeEventListener('auth-change', handleAuthChange);
   }, []);
 
-  if (loading) {
-    return (
-      <div className="flex h-screen w-full items-center justify-center bg-slate-50">
-        <div className="text-lg font-bold text-gray-500 animate-pulse">Solai Catering</div>
-      </div>
-    );
-  }
+  if (loading) return <PageLoader />;
 
   return (
     <LanguageProvider>
       <BrowserRouter>
-        <Routes>
-          {isLoggedIn ? (
-            <>
-              <Route path="/menu" element={<MenuPage />} />
-              <Route path="/selection" element={<SelectionPage />} />
-              <Route path="/history" element={<HistoryPage />} />
-              <Route path="/admin" element={<AdminPage />} />
-              <Route path="/settings" element={<SettingsPage />} />
-              <Route path="*" element={<Navigate to="/menu" replace />} />
-            </>
-          ) : (
-            <>
-              <Route path="/" element={<LandingPage />} />
-              <Route path="/login" element={<LoginPage />} />
-              <Route path="/register" element={<RegisterPage />} />
-              <Route path="*" element={<Navigate to="/" replace />} />
-            </>
-          )}
-        </Routes>
+        <Suspense fallback={<PageLoader />}>
+          <Routes>
+            {isLoggedIn ? (
+              <>
+                <Route path="/menu" element={<MenuPage />} />
+                <Route path="/selection" element={<SelectionPage />} />
+                <Route path="/history" element={<HistoryPage />} />
+                <Route path="/admin" element={<AdminPage />} />
+                <Route path="*" element={<Navigate to="/menu" replace />} />
+              </>
+            ) : (
+              <>
+                <Route path="/" element={<LandingPage />} />
+                <Route path="/login" element={<LoginPage />} />
+                <Route path="/register" element={<RegisterPage />} />
+                <Route path="*" element={<Navigate to="/" replace />} />
+              </>
+            )}
+          </Routes>
+        </Suspense>
       </BrowserRouter>
     </LanguageProvider>
   );

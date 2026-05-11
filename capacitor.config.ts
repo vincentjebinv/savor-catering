@@ -1,8 +1,8 @@
 import { CapacitorConfig } from '@capacitor/cli';
 
 const config: CapacitorConfig = {
-  appId: 'com.solaicatering.app',
-  appName: 'Solai Catering',
+  appId: 'com.savor.catering',
+  appName: 'savor-catering',
   webDir: 'dist',
   server: {
     androidScheme: 'https', // 🟢 THIS FIXES THE BROKEN IMAGE

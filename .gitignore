@@ -37,3 +37,6 @@ server/dist
 *.njsproj
 *.sln
 *.sw?
+android/.gradle
+android/.kotlin
+
