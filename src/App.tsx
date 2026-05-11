@@ -2,6 +2,7 @@ import { useState, useEffect, lazy, Suspense } from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { isLoggedIn as checkLoginStatus } from './core/services/SessionService';
 import { LanguageProvider } from './core/context/LanguageProvider';
+import DisclaimerModal from './shared/components/DisclaimerModal';
 
 // Lazy loading pages for performance
 const LandingPage = lazy(() => import('./features/auth/LandingPage'));
@@ -41,6 +42,7 @@ function App() {
     <LanguageProvider>
       <BrowserRouter>
         <Suspense fallback={<PageLoader />}>
+          {isLoggedIn && <DisclaimerModal />}
           <Routes>
             {isLoggedIn ? (
               <>

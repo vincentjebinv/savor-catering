@@ -23,6 +23,7 @@ export const AuthService = {
 
   logout: async () => {
     localStorage.removeItem('user_data');
+    sessionStorage.removeItem('disclaimer_session_seen');
     await clearSession();
     window.dispatchEvent(new Event('auth-change'));
     window.location.href = '/login';

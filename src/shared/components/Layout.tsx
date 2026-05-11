@@ -6,7 +6,6 @@ import LanguageToggle from './LanguageToggle';
 import { logoutUser } from '../../features/auth/AuthService';
 import { useTranslation } from '../../core/context/LanguageProvider';
 import { useCartStore } from '../../features/orders/cartStore'; // 🟢 Import store
-import DisclaimerModal from './DisclaimerModal';
 
 interface LayoutProps {
   children: ReactNode;
@@ -72,7 +71,6 @@ export default function Layout({
           <Key size={24} /><span className="mt-1 text-[10px] font-bold">{t('admin')}</span>
         </button>
       </div>
-      <DisclaimerModal />
     </div>
   );
 }

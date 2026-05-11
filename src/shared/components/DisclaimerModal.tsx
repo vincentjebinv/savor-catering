@@ -5,14 +5,14 @@ export default function DisclaimerModal() {
   const [isOpen, setIsOpen] = useState(false);
 
   useEffect(() => {
-    const hasSeen = localStorage.getItem('disclaimer_v3_final');
+    const hasSeen = sessionStorage.getItem('disclaimer_session_seen');
     if (!hasSeen) {
       setIsOpen(true);
     }
   }, []);
 
   const handleClose = () => {
-    localStorage.setItem('disclaimer_v3_final', 'true');
+    sessionStorage.setItem('disclaimer_session_seen', 'true');
     setIsOpen(false);
   };
 
