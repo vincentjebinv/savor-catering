@@ -5,9 +5,9 @@
  * Free tier: 100 queries / day.
  */
 
-// 🔑 Add your Google API Key and Search Engine ID (CX) here
-const GOOGLE_API_KEY = "AIzaSyDJU3VsbS36oBfgMttQK0-wNF53rXhjEXo"; 
-const GOOGLE_SEARCH_CX = "97ed668bdeb0a41f5"; 
+// 🔑 Google API Key and Search Engine ID (CX) from environment variables
+const GOOGLE_API_KEY = import.meta.env.VITE_GOOGLE_API_KEY;
+const GOOGLE_SEARCH_CX = import.meta.env.VITE_GOOGLE_SEARCH_CX;
 
 export const findGoogleImages = async (dishName: string): Promise<string[]> => {
   if (!dishName.trim() || !GOOGLE_API_KEY || !GOOGLE_SEARCH_CX) return [];

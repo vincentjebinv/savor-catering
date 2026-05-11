@@ -7,6 +7,8 @@
 
 **Savor Catering** is a high-performance, mobile-first catering management application. Originally developed as a custom SaaS solution for a private client, this version has been repurposed into a standalone, local-only demo to showcase modern web development expertise.
 
+**[🚀 Live Demo](https://savor-catering-vincentjebinvs-projects.vercel.app/)**
+
 ---
 
 ## ✨ Key Features

@@ -26,7 +26,6 @@ export const AuthService = {
     sessionStorage.removeItem('disclaimer_session_seen');
     await clearSession();
     window.dispatchEvent(new Event('auth-change'));
-    window.location.href = '/login';
   },
 
   getCurrentUser: () => {
